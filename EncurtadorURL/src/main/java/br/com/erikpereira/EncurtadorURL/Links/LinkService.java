@@ -29,7 +29,11 @@ public class LinkService {
         return linkRepository.save(link);
     }
 
-    public String getOriginalUrl(String shortUrl) {
-
+    public Link getUrlOriginal(String shortUrl) {
+        try {
+            return linkRepository.findByUrlShort(shortUrl);
+        } catch (Exception e) {
+            throw new RuntimeException("Url not exists");
+        }
     }
 }
