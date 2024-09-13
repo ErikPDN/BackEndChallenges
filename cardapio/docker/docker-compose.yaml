@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=cardapiodb
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
