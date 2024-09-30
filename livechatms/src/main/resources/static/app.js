@@ -49,7 +49,7 @@ function sendMessage() {
 }
 
 function updateLiveChat(message) {
-    $("#livechat").append("<tr><td>" + message + "</td></tr>");
+    $("#livechat").append("<tr><td>"+ message + "</td></tr>");
 }
 
 $(function () {

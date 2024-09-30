@@ -14,6 +14,6 @@ public class LiveChatController {
     @MessageMapping("/new-message")
     @SendTo("/topics/livechat")
     public ChatOutput newMessage(ChatInput input) {
-        return new ChatOutput(HtmlUtils.htmlEscape(input.user() + input.message()));
+        return new ChatOutput(HtmlUtils.htmlEscape(input.user() + ": " + input.message()));
     }
 }
