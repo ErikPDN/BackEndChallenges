@@ -21,7 +21,7 @@ public class OrderEntity {
     @Field(targetType = FieldType.DECIMAL128)
     private BigDecimal total;
 
-    private List<OrderItem> itens;
+    private List<OrderItem> items;
 
     public OrderEntity() {
     }
@@ -34,12 +34,12 @@ public class OrderEntity {
         this.orderId = orderId;
     }
 
-    public Long getCustumerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustumerId(Long custumerId) {
-        this.customerId = custumerId;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     public BigDecimal getTotal() {
@@ -50,11 +50,11 @@ public class OrderEntity {
         this.total = total;
     }
 
-    public List<OrderItem> getItens() {
-        return itens;
+    public List<OrderItem> getItems() {
+        return items;
     }
 
-    public void setItens(List<OrderItem> itens) {
-        this.itens = itens;
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
     }
 }
