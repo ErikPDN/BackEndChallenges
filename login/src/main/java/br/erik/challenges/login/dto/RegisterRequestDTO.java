@@ -1,4 +1,4 @@
 package br.erik.challenges.login.dto;
 
-public class RegisterRequestDTO {
+public record RegisterRequestDTO(String name, String email, String password) {
 }

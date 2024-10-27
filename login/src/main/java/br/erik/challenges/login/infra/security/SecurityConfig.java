@@ -1,5 +1,6 @@
 package br.erik.challenges.login.infra.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,13 +19,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final CustomUserDetailsService customUserDetailsService;
-    private final SecurityFilter securityFilter;
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService, SecurityFilter securityFilter) {
-        this.customUserDetailsService = customUserDetailsService;
-        this.securityFilter = securityFilter;
-    }
+    @Autowired
+    SecurityFilter securityFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
