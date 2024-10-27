@@ -22,7 +22,7 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
             return JWT.create()
-                    .withIssuer("login")
+                    .withIssuer("login-auth-api")
                     .withSubject(user.getEmail())
                     .withExpiresAt(this.generateExpirationDate())
                     .sign(algorithm);
@@ -37,7 +37,7 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                    .withIssuer("login")  // Verifica o emissor (issuer)
+                    .withIssuer("login-auth-api")  // Verifica o emissor (issuer)
                     .build()
                     .verify(token)         // Verifica a assinatura do token
                     .getSubject();         // Retorna o subject
