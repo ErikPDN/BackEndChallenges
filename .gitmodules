@@ -1,0 +1,3 @@
+[submodule "poi"]
+	path = poi
+	url = /home/erikubuntu/JavaProjects/BackEndChallenges/poi/
