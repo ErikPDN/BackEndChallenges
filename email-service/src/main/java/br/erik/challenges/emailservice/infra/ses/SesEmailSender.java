@@ -1,6 +1,7 @@
 package br.erik.challenges.emailservice.infra.ses;
 
 import br.erik.challenges.emailservice.adapters.EmailSenderGateway;
+import br.erik.challenges.emailservice.core.exceptions.EmailServiceException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.*;
@@ -22,7 +23,7 @@ public class SesEmailSender implements EmailSenderGateway {
     public void sendEmail(String to, String subject, String body) {
 
         SendEmailRequest request = new SendEmailRequest()
-                .withSource("erikpereiraneves@gmail.com")
+                .withSource("erik.pereiradn@gmail.com")
                 .withDestination(new Destination().withToAddresses(to))
                 .withMessage(new Message()
                         .withSubject(new Content(subject))
@@ -32,7 +33,7 @@ public class SesEmailSender implements EmailSenderGateway {
         try {
             this.amazonSimpleEmailService.sendEmail(request);
         } catch (AmazonServiceException e) {
-            throw new EmailServiceException("Failed to send email to " + to + ": " + e.getErrorMessage(), e);
+            throw new EmailServiceException("Failure while send email", e);
         }
     }
 }
