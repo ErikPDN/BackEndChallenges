@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import br.erik.challengs.btgpactual.orderms.entity.OrderEntity;
 
+import java.math.BigDecimal;
+
 @Repository
 public interface OrderRepository extends MongoRepository<OrderEntity,Long> {
     Page<OrderEntity> findAllByCustomerId(Long customerId, PageRequest pageRequest);

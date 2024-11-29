@@ -1,0 +1,10 @@
+services:
+  postgres:
+    container_name: 'postgres-magalu'
+    image: 'postgres:latest'
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: magaludb
+    ports:
+      - '5432:5432'
