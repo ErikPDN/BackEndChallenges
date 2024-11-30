@@ -42,16 +42,17 @@ public class NotificationService {
                 Status.Values.ERROR.toStatus()
         ), dateTime);
 
-        notifications.forEach(sendNotification());
-
+        notifications.forEach(sendNotifications());
     }
 
-    private Consumer<Notification> sendNotification() {
+    private Consumer<Notification> sendNotifications() {
         return n -> {
-            // TODO - REALIZAR O ENVIO DA NOTIFICAÇÂO
+            // TODO - enviar notificação
 
             n.setStatus(Status.Values.SUCCESS.toStatus());
             notificationRepository.save(n);
         };
     }
+
+
 }
