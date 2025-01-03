@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.erikneves.desafio_bancointer.controller.dto.CreateUserRequestDTO;
 import dev.erikneves.desafio_bancointer.controller.dto.CreateUserResponseDTO;
-import dev.erikneves.desafio_bancointer.controller.dto.GetUserIdByResponseDTO;
+import dev.erikneves.desafio_bancointer.controller.dto.GetUserByIdResponseDTO;
 import dev.erikneves.desafio_bancointer.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +36,15 @@ public class UserController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<GetUserIdByResponseDTO> getUserById(@PathVariable UUID id) {
+  public ResponseEntity<GetUserByIdResponseDTO> getUserById(@PathVariable UUID id) {
     var userDTO = this.userService.getUserById(id);
-    var response = new GetUserIdByResponseDTO(userDTO.id(), userDTO.name(), userDTO.email());
+    var response = new GetUserByIdResponseDTO(userDTO.id(), userDTO.name(), userDTO.email());
     return ResponseEntity.ok(response);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteUserById(@PathVariable UUID id) {
+    this.userService.deleteUserById(id);
+    return ResponseEntity.noContent().build();
   }
 }

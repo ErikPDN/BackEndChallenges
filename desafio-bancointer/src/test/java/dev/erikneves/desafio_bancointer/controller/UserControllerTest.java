@@ -73,4 +73,16 @@ public class UserControllerTest {
     assertEquals(body.name(), userDTO.name());
     assertEquals(body.email(), userDTO.email());
   }
+
+  @Test
+  void isShouldDeleteUserById() {
+    // given
+    var uuid = UUID.randomUUID();
+
+    // when
+    this.userController.deleteUserById(uuid);
+
+    // then
+    verify(this.userService, times(1)).deleteUserById(uuid);
+  }
 }

@@ -8,4 +8,6 @@ public interface UserService {
   UUID createUser(String name, String email);
 
   UserDTO getUserById(UUID id);
+
+  void deleteUserById(UUID id);
 }

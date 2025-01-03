@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import dev.erikneves.desafio_bancointer.domain.User;
 import dev.erikneves.desafio_bancointer.repository.UserRepository;
 import dev.erikneves.desafio_bancointer.service.exceptions.EmailAlreadyExistsException;
+import dev.erikneves.desafio_bancointer.service.exceptions.UserNotFoundException;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -16,6 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.reset;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -77,5 +79,52 @@ class UserServiceImplTest {
       this.userServiceImpl.createUser(name, email);
     });
     verify(this.userRepository, times(0)).save(any());
+  }
+
+  @Test
+  void itShouldReturnAnUserDTOIfUserExists() {
+    // given
+    UUID uuid = UUID.randomUUID();
+    var user = User.builder().id(uuid).name("John Doe").email("john.doe@gmail.com").build();
+    when(this.userRepository.findById(uuid))
+        .thenReturn(Optional.of(user));
+
+    // when
+    var userDTO = this.userServiceImpl.getUserById(uuid);
+
+    // then
+    assertEquals(uuid, userDTO.id());
+    assertEquals(user.getName(), userDTO.name());
+    assertEquals(user.getEmail(), userDTO.email());
+    verify(this.userRepository, times(1))
+        .findById(uuid);
+  }
+
+  @Test
+  void itShouldReturnAnErrorIfUserDoesntExist() {
+    // given
+    UUID uuid = UUID.randomUUID();
+    when(this.userRepository.findById(uuid))
+        .thenReturn(Optional.empty());
+
+    // when & then
+    assertThrows(UserNotFoundException.class, () -> {
+      this.userServiceImpl.getUserById(uuid);
+    });
+    verify(this.userRepository, times(1))
+        .findById(uuid);
+  }
+
+  @Test
+  void isShouldDeleteUserIfExists() {
+    // given
+    UUID uuid = UUID.randomUUID();
+
+    // when
+    this.userServiceImpl.deleteUserById(uuid);
+
+    // then
+    verify(this.userRepository, times(1))
+        .deleteById(uuid);
   }
 }

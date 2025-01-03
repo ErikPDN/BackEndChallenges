@@ -43,4 +43,8 @@ public class UserServiceImpl implements UserService {
         .build();
   }
 
+  @Override
+  public void deleteUserById(UUID id) {
+    this.userRepository.deleteById(id);
+  }
 }
