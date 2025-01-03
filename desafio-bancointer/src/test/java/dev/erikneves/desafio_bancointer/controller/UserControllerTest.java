@@ -12,9 +12,11 @@ import org.mockito.MockitoAnnotations;
 
 import dev.erikneves.desafio_bancointer.controller.dto.CreateUserRequestDTO;
 import dev.erikneves.desafio_bancointer.service.UserService;
+import dev.erikneves.desafio_bancointer.service.dto.UserDTO;
 
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -52,5 +54,23 @@ public class UserControllerTest {
     // then
     assertThat(body.id()).isEqualTo(uuid);
     verify(this.userService, times(1)).createUser(request.name(), request.email());
+  }
+
+  @Test
+  void isShouldGetUserById() {
+    // given
+    var uuid = UUID.randomUUID();
+    var userDTO = new UserDTO(uuid, "John Doe", "john.doe@gmail.com");
+    when(this.userService.getUserById(uuid))
+        .thenReturn(userDTO);
+
+    // when
+    var response = this.userController.getUserById(uuid);
+    var body = response.getBody();
+
+    // then
+    assertEquals(body.id(), userDTO.id());
+    assertEquals(body.name(), userDTO.name());
+    assertEquals(body.email(), userDTO.email());
   }
 }

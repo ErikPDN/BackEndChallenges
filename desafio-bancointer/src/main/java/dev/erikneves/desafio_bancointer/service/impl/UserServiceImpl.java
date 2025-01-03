@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import dev.erikneves.desafio_bancointer.domain.User;
 import dev.erikneves.desafio_bancointer.repository.UserRepository;
 import dev.erikneves.desafio_bancointer.service.UserService;
+import dev.erikneves.desafio_bancointer.service.dto.UserDTO;
 import dev.erikneves.desafio_bancointer.service.exceptions.EmailAlreadyExistsException;
+import dev.erikneves.desafio_bancointer.service.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -27,4 +29,18 @@ public class UserServiceImpl implements UserService {
     this.userRepository.save(user);
     return user.getId();
   }
+
+  @Override
+  public UserDTO getUserById(UUID id) {
+    var user = this.userRepository.findById(id)
+        .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
+
+    // Method Chaining
+    return UserDTO.builder()
+        .id(user.getId())
+        .name(user.getName())
+        .email(user.getEmail())
+        .build();
+  }
+
 }
