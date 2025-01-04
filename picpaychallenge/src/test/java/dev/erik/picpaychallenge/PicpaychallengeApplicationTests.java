@@ -1,0 +1,13 @@
+package dev.erik.picpaychallenge;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class PicpaychallengeApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
