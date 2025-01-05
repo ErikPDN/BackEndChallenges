@@ -1,4 +1,4 @@
-package dev.erik.picpaychallenge.entities;
+package dev.erik.picpaychallenge.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package dev.erik.picpaychallenge.entities;
+package dev.erik.picpaychallenge.entity;
 
 import java.math.BigDecimal;
 
@@ -9,10 +9,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +22,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,9 +38,8 @@ public class User {
 
   private String password;
 
-  private BigDecimal balance = BigDecimal.ZERO;
+  private BigDecimal balance;
 
   @Enumerated(EnumType.STRING)
   private UserType userType;
-
 }
