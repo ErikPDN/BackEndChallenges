@@ -38,8 +38,16 @@ public class User {
 
   private String password;
 
-  private BigDecimal balance;
+  private BigDecimal balance = BigDecimal.ZERO;
 
   @Enumerated(EnumType.STRING)
   private UserType userType;
+
+  public void credit(BigDecimal value) {
+    this.balance = this.balance.add(value);
+  }
+
+  public void debit(BigDecimal value) {
+    this.balance = this.balance.subtract(value);
+  }
 }

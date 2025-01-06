@@ -1,7 +1,7 @@
 package dev.erik.picpaychallenge.service;
 
-import dev.erik.picpaychallenge.entity.Transaction;
+import dev.erik.picpaychallenge.service.dto.TransactionDTO;
 
 public interface NotificationService {
-  void sendNotification(Transaction transaction);
+  void sendNotification(TransactionDTO transaction);
 }
