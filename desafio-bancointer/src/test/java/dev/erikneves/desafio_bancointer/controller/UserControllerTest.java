@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import dev.erikneves.desafio_bancointer.controller.dto.CreateUserRequestDTO;
+import dev.erikneves.desafio_bancointer.controller.dto.UpdateUserRequestDTO;
 import dev.erikneves.desafio_bancointer.service.UserService;
 import dev.erikneves.desafio_bancointer.service.dto.UserDTO;
 
@@ -84,5 +85,19 @@ public class UserControllerTest {
 
     // then
     verify(this.userService, times(1)).deleteUserById(uuid);
+  }
+
+  @Test
+  void itShouldUpdateUserById() {
+    // given
+    var uuid = UUID.randomUUID();
+    var request = new UpdateUserRequestDTO("John Doe", "john.doe@gmail.com");
+
+    // when
+    this.userController.updateUserById(uuid, request);
+
+    // then
+    verify(this.userService, times(1))
+        .updateUserById(uuid, request.name(), request.email());
   }
 }

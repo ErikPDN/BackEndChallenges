@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.erikneves.desafio_bancointer.controller.dto.CreateUserRequestDTO;
 import dev.erikneves.desafio_bancointer.controller.dto.CreateUserResponseDTO;
 import dev.erikneves.desafio_bancointer.controller.dto.GetUserByIdResponseDTO;
+import dev.erikneves.desafio_bancointer.controller.dto.UpdateUserRequestDTO;
 import dev.erikneves.desafio_bancointer.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +47,16 @@ public class UserController {
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteUserById(@PathVariable UUID id) {
     this.userService.deleteUserById(id);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<Void> updateUserById(@PathVariable UUID userId,
+      @RequestBody @Valid UpdateUserRequestDTO updateUserRequestDTO) {
+
+    this.userService.updateUserById(userId,
+        updateUserRequestDTO.name(),
+        updateUserRequestDTO.email());
     return ResponseEntity.noContent().build();
   }
 }

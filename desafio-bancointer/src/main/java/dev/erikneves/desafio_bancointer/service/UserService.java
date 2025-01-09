@@ -10,4 +10,6 @@ public interface UserService {
   UserDTO getUserById(UUID id);
 
   void deleteUserById(UUID id);
+
+  void updateUserById(UUID userId, String name, String email);
 }
