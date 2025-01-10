@@ -10,6 +10,7 @@ import dev.erikneves.desafio_bancointer.service.UserService;
 import dev.erikneves.desafio_bancointer.service.dto.UserDTO;
 import dev.erikneves.desafio_bancointer.service.exceptions.EmailAlreadyExistsException;
 import dev.erikneves.desafio_bancointer.service.exceptions.UserNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -35,12 +36,13 @@ public class UserServiceImpl implements UserService {
     var user = this.userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
 
-    // Method Chaining
-    return UserDTO.builder()
+    var userDTO = UserDTO.builder()
         .id(user.getId())
         .name(user.getName())
         .email(user.getEmail())
         .build();
+
+    return userDTO;
   }
 
   @Override
@@ -49,12 +51,20 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
   public void updateUserById(UUID userId, String name, String email) {
     var user = this.userRepository.findById(userId)
         .orElseThrow(() -> new UserNotFoundException("User with ID " + userId + " not found"));
 
+    // Verificar se o novo email já existe para outro usuário
+    var existingUserWithEmail = this.userRepository.findByEmail(email);
+    if (existingUserWithEmail.isPresent() && !existingUserWithEmail.get().getId().equals(userId)) {
+      throw new EmailAlreadyExistsException();
+    }
+
     user.setName(name);
     user.setEmail(email);
+
     this.userRepository.save(user);
   }
 }

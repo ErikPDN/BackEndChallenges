@@ -127,4 +127,42 @@ class UserServiceImplTest {
     verify(this.userRepository, times(1))
         .deleteById(uuid);
   }
+
+  @Test
+  void itShouldUpdateUser() {
+    // given
+    var uuid = UUID.randomUUID();
+    var user = User.builder().id(uuid).name("John Doe").email("john.doe@gmail.com").build();
+    when(this.userRepository.findById(uuid))
+        .thenReturn(Optional.of(user));
+
+    // when
+    this.userServiceImpl.updateUserById(uuid, "Jane Doe", "jane.doe@gmail.com");
+
+    // then
+    var captor = ArgumentCaptor.forClass(User.class);
+    verify(this.userRepository, times(1))
+        .save(captor.capture());
+
+    var updatedUser = captor.getValue();
+    assertEquals(uuid, updatedUser.getId());
+    assertEquals("Jane Doe", updatedUser.getName());
+    assertEquals("jane.doe@gmail.com", updatedUser.getEmail());
+  }
+
+  @Test
+  void itShouldThrowAnErrorIfUserDoesnotExistWhenUpdating() {
+    // given
+    var uuid = UUID.randomUUID();
+    when(this.userRepository.findById(uuid))
+        .thenReturn(Optional.empty());
+
+    // when & then
+    assertThrows(UserNotFoundException.class, () -> {
+      this.userServiceImpl.updateUserById(uuid, "Jane Doe", "jane.doe@gmail.com");
+    });
+    verify(this.userRepository, times(0))
+        .save(any());
+
+  }
 }

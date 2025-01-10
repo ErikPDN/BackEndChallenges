@@ -19,14 +19,16 @@ import dev.erikneves.desafio_bancointer.controller.dto.GetUserByIdResponseDTO;
 import dev.erikneves.desafio_bancointer.controller.dto.UpdateUserRequestDTO;
 import dev.erikneves.desafio_bancointer.service.UserService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/users")
 @Validated
-@RequiredArgsConstructor
 public class UserController {
   private final UserService userService;
+
+  public UserController(UserService userService) {
+    this.userService = userService;
+  }
 
   @PostMapping
   public ResponseEntity<CreateUserResponseDTO> createUser(
@@ -51,10 +53,10 @@ public class UserController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Void> updateUserById(@PathVariable UUID userId,
+  public ResponseEntity<Void> updateUserById(@PathVariable UUID id,
       @RequestBody @Valid UpdateUserRequestDTO updateUserRequestDTO) {
 
-    this.userService.updateUserById(userId,
+    this.userService.updateUserById(id,
         updateUserRequestDTO.name(),
         updateUserRequestDTO.email());
     return ResponseEntity.noContent().build();
