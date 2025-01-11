@@ -1,6 +1,7 @@
 package dev.erikneves.desafio_bancointer.controller;
 
 import java.util.UUID;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,9 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.erikneves.desafio_bancointer.controller.dto.CreateUserRequestDTO;
 import dev.erikneves.desafio_bancointer.controller.dto.CreateUserResponseDTO;
+import dev.erikneves.desafio_bancointer.controller.dto.GetCalculationsByUserIdResponseDTO;
 import dev.erikneves.desafio_bancointer.controller.dto.GetUserByIdResponseDTO;
+import dev.erikneves.desafio_bancointer.controller.dto.UniqueDigitDTO;
 import dev.erikneves.desafio_bancointer.controller.dto.UpdateUserRequestDTO;
 import dev.erikneves.desafio_bancointer.service.UserService;
+
 import jakarta.validation.Valid;
 
 @RestController
@@ -60,5 +64,12 @@ public class UserController {
         updateUserRequestDTO.name(),
         updateUserRequestDTO.email());
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/{id}/calculations")
+  public ResponseEntity<GetCalculationsByUserIdResponseDTO> getCalculationsUserById(@PathVariable UUID id) {
+    var uniqueDigitDTO = new UniqueDigitDTO("9875", 2, 2);
+    var response = new GetCalculationsByUserIdResponseDTO(List.of(uniqueDigitDTO));
+    return ResponseEntity.ok(response);
   }
 }
