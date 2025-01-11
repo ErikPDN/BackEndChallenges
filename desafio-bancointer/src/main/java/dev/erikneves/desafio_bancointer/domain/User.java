@@ -4,29 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
-@Data
 @Builder
 @Table(name = "users")
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 public class User {
-  @Builder.Default
+
   @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "id", updatable = false, nullable = false, columnDefinition = "varchar(36)")
-  private UUID id = UUID.randomUUID();
+  private UUID id;
 
   @Column(name = "name", updatable = false, nullable = false, columnDefinition = "varchar(255)")
   private String name;

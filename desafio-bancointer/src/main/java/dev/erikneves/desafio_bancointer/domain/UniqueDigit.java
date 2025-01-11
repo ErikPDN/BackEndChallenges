@@ -9,14 +9,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "unique_digits")
+@RequiredArgsConstructor
 public class UniqueDigit {
   @Id
   @Column(name = "id", updatable = false, nullable = false, columnDefinition = "varchar(36)")
   private UUID id;
 
+  @Getter
   @Column(name = "result", nullable = false, columnDefinition = "int")
   private int result;
 
@@ -44,9 +48,5 @@ public class UniqueDigit {
     return numberString.chars()
         .map(Character::getNumericValue)
         .sum();
-  }
-
-  public int getResult() {
-    return this.result;
   }
 }

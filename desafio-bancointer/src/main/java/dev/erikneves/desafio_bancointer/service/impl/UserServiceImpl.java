@@ -36,13 +36,11 @@ public class UserServiceImpl implements UserService {
     var user = this.userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
 
-    var userDTO = UserDTO.builder()
-        .id(user.getId())
-        .name(user.getName())
-        .email(user.getEmail())
-        .build();
-
-    return userDTO;
+      return UserDTO.builder()
+          .id(user.getId())
+          .name(user.getName())
+          .email(user.getEmail())
+          .build();
   }
 
   @Override
