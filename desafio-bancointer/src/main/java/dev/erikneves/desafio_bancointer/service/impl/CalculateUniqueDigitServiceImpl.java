@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import dev.erikneves.desafio_bancointer.domain.UniqueDigit;
+import dev.erikneves.desafio_bancointer.repository.UserRepository;
 import dev.erikneves.desafio_bancointer.service.CalculateUniqueDigitService;
 import lombok.RequiredArgsConstructor;
 
@@ -14,9 +15,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CalculateUniqueDigitServiceImpl implements CalculateUniqueDigitService {
 
+  private final UserRepository userRepository;
+
   @Override
   public int calculateUniqueDigit(BigInteger number, int k, Optional<UUID> userId) {
     var uniqueDigit = new UniqueDigit(number, k);
+    if (userId.isPresent()) {
+      this.userRepository.findById(userId.get()).ifPresent(user -> {
+        user.addUniqueDigit(uniqueDigit);
+        this.userRepository.save(user);
+      });
+    }
 
     return uniqueDigit.getResult();
   }

@@ -9,27 +9,51 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "unique_digits")
-@RequiredArgsConstructor
+@Data
+@NoArgsConstructor
 public class UniqueDigit {
   @Id
   @Column(name = "id", updatable = false, nullable = false, columnDefinition = "varchar(36)")
-  private UUID id;
+  private UUID id = UUID.randomUUID();
 
-  @Getter
+  public UUID getId() {
+    return this.id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
+
   @Column(name = "result", nullable = false, columnDefinition = "int")
   private int result;
 
   @ManyToOne
-  @JoinColumn(name = "user_id", columnDefinition = "varchar(36)")
+  @JoinColumn(name = "user_id", columnDefinition = "varchar(36)", nullable = true)
   private User user;
 
+  @Column(name = "number", nullable = false, columnDefinition = "TEXT")
+  private String number;
+
+  @Column(name = "k", nullable = false, columnDefinition = "int")
+  private int k;
+
   public UniqueDigit(BigInteger number, Integer k) {
+    this.number = String.valueOf(number);
+    this.k = k;
     this.result = this.calculateNewUniqueDigit(number, k);
+  }
+
+  public int getResult() {
+    return this.result;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 
   private int calculateNewUniqueDigit(BigInteger number, int k) {
@@ -48,5 +72,15 @@ public class UniqueDigit {
     return numberString.chars()
         .map(Character::getNumericValue)
         .sum();
+  }
+
+  @Override
+  public UniqueDigit clone() {
+    var newUniqueDigit = new UniqueDigit();
+    newUniqueDigit.setResult(this.result);
+    newUniqueDigit.setUser(this.user);
+    newUniqueDigit.setNumber(this.number);
+    newUniqueDigit.setK(this.k);
+    return newUniqueDigit;
   }
 }
