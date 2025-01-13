@@ -1,5 +1,6 @@
 package dev.erikneves.desafio_bancointer.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -13,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import dev.erikneves.desafio_bancointer.controller.dto.CreateUserRequestDTO;
 import dev.erikneves.desafio_bancointer.controller.dto.UpdateUserRequestDTO;
 import dev.erikneves.desafio_bancointer.service.UserService;
+import dev.erikneves.desafio_bancointer.service.dto.UniqueDigitDTO;
 import dev.erikneves.desafio_bancointer.service.dto.UserDTO;
 
 import static org.mockito.Mockito.when;
@@ -99,5 +101,30 @@ public class UserControllerTest {
     // then
     verify(this.userService, times(1))
         .updateUserById(uuid, request.name(), request.email());
+  }
+
+  @Test
+  void itShouldReturnAnListOfListOfUniqueDigitDTO() {
+    // given
+    var result = List.of(
+        new UniqueDigitDTO("1", 1, 1),
+        new UniqueDigitDTO("2", 2, 2),
+        new UniqueDigitDTO("3", 3, 3));
+    var uuid = UUID.randomUUID();
+    when(this.userService.getCalculationsByUserId(uuid))
+        .thenReturn(result);
+
+    // when
+    var response = this.userController.getCalculationsByUserId(uuid);
+    var body = response.getBody();
+
+    // then
+    verify(this.userService, times(1))
+        .getCalculationsByUserId(uuid);
+    for (int i = 0; i < 3; i++) {
+      assertEquals(body.uniqueDigits().get(i).number(), result.get(i).number());
+      assertEquals(body.uniqueDigits().get(i).k(), result.get(i).k());
+      assertEquals(body.uniqueDigits().get(i).result(), result.get(i).result());
+    }
   }
 }

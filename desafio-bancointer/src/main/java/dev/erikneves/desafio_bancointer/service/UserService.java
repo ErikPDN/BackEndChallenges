@@ -1,7 +1,9 @@
 package dev.erikneves.desafio_bancointer.service;
 
+import java.util.List;
 import java.util.UUID;
 
+import dev.erikneves.desafio_bancointer.service.dto.UniqueDigitDTO;
 import dev.erikneves.desafio_bancointer.service.dto.UserDTO;
 
 public interface UserService {
@@ -12,4 +14,6 @@ public interface UserService {
   void deleteUserById(UUID id);
 
   void updateUserById(UUID userId, String name, String email);
+
+  List<UniqueDigitDTO> getCalculationsByUserId(UUID userId);
 }

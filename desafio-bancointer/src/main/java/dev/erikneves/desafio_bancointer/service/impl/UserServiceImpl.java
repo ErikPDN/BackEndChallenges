@@ -1,12 +1,15 @@
 package dev.erikneves.desafio_bancointer.service.impl;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import dev.erikneves.desafio_bancointer.domain.User;
 import dev.erikneves.desafio_bancointer.repository.UserRepository;
 import dev.erikneves.desafio_bancointer.service.UserService;
+import dev.erikneves.desafio_bancointer.service.dto.UniqueDigitDTO;
 import dev.erikneves.desafio_bancointer.service.dto.UserDTO;
 import dev.erikneves.desafio_bancointer.service.exceptions.EmailAlreadyExistsException;
 import dev.erikneves.desafio_bancointer.service.exceptions.UserNotFoundException;
@@ -36,11 +39,11 @@ public class UserServiceImpl implements UserService {
     var user = this.userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
 
-      return UserDTO.builder()
-          .id(user.getId())
-          .name(user.getName())
-          .email(user.getEmail())
-          .build();
+    return UserDTO.builder()
+        .id(user.getId())
+        .name(user.getName())
+        .email(user.getEmail())
+        .build();
   }
 
   @Override
@@ -65,4 +68,21 @@ public class UserServiceImpl implements UserService {
 
     this.userRepository.save(user);
   }
+
+  @Override
+  public List<UniqueDigitDTO> getCalculationsByUserId(UUID userId) {
+    var user = this.userRepository.findById(userId)
+        .orElseThrow(() -> new UserNotFoundException("User with ID " + userId + " not found"));
+
+    // Garante que os uniqueDigits estão inicializados se for LAZY
+    return user.getUniqueDigits().stream()
+        .map(uniqueDigit -> {
+          return new UniqueDigitDTO(
+              uniqueDigit.getNumber(),
+              uniqueDigit.getK(),
+              uniqueDigit.getResult());
+        })
+        .collect(Collectors.toList());
+  }
+
 }

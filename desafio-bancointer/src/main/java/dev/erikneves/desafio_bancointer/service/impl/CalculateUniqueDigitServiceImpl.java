@@ -20,12 +20,10 @@ public class CalculateUniqueDigitServiceImpl implements CalculateUniqueDigitServ
   @Override
   public int calculateUniqueDigit(BigInteger number, int k, Optional<UUID> userId) {
     var uniqueDigit = new UniqueDigit(number, k);
-    if (userId.isPresent()) {
-      this.userRepository.findById(userId.get()).ifPresent(user -> {
-        user.addUniqueDigit(uniqueDigit);
-        this.userRepository.save(user);
+      userId.flatMap(this.userRepository::findById).ifPresent(user -> {
+          user.addUniqueDigit(uniqueDigit);
+          this.userRepository.save(user);
       });
-    }
 
     return uniqueDigit.getResult();
   }

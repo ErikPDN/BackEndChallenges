@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -16,10 +18,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "unique_digits")
 @Data
 @NoArgsConstructor
-public class UniqueDigit {
+public class UniqueDigit implements Cloneable {
   @Id
-  @Column(name = "id", updatable = false, nullable = false, columnDefinition = "varchar(36)")
-  private UUID id = UUID.randomUUID();
+  @Column(name = "id", nullable = false)
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
   public UUID getId() {
     return this.id;
@@ -33,7 +36,7 @@ public class UniqueDigit {
   private int result;
 
   @ManyToOne
-  @JoinColumn(name = "user_id", columnDefinition = "varchar(36)", nullable = true)
+  @JoinColumn(name = "user_id", nullable = true)
   private User user;
 
   @Column(name = "number", nullable = false, columnDefinition = "TEXT")

@@ -5,6 +5,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import dev.erikneves.desafio_bancointer.domain.UniqueDigit;
 import dev.erikneves.desafio_bancointer.domain.User;
 import dev.erikneves.desafio_bancointer.repository.UserRepository;
 import dev.erikneves.desafio_bancointer.service.exceptions.EmailAlreadyExistsException;
@@ -16,6 +17,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.reset;
 
+import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -164,5 +167,40 @@ class UserServiceImplTest {
     verify(this.userRepository, times(0))
         .save(any());
 
+  }
+
+  @Test
+  void itShouldReturnAnListOfUniqueDigitsIfUserExists() {
+    // given
+    var uuid = UUID.randomUUID();
+    var uniqueDigits = new UniqueDigit(BigInteger.valueOf(9875), 4);
+    var user = User.builder().id(uuid)
+        .name("John Doe")
+        .email("john.doe@gmail.com")
+        .uniqueDigits(List.of(uniqueDigits))
+        .build();
+    when(this.userRepository.findById(uuid))
+        .thenReturn(Optional.of(user));
+
+    // when
+    var listOfUniqueDigits = this.userServiceImpl.getCalculationsByUserId(uuid);
+
+    // then
+    assertEquals(1, listOfUniqueDigits.size());
+    assertEquals(uniqueDigits.getResult(), listOfUniqueDigits.get(0).result());
+    assertEquals(uniqueDigits.getNumber(), listOfUniqueDigits.get(0).number());
+    assertEquals(uniqueDigits.getK(), listOfUniqueDigits.get(0).k());
+  }
+
+  @Test
+  void itShouldThrowAnErrorIfUserDoesnotExist() {
+    // given
+    var uuid = UUID.randomUUID();
+    when(this.userRepository.findById(uuid))
+        .thenReturn(Optional.empty());
+    // when & then
+    assertThrows(UserNotFoundException.class, () -> {
+      this.userServiceImpl.getCalculationsByUserId(uuid);
+    });
   }
 }

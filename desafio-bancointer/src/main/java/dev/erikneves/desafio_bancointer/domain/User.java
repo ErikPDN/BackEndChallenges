@@ -18,13 +18,13 @@ public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  @Column(name = "id", updatable = false, nullable = false, columnDefinition = "varchar(36)")
+  @Column(name = "id", nullable = false)
   private UUID id;
 
-  @Column(name = "name", updatable = false, nullable = false, columnDefinition = "varchar(255)")
+  @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name = "email", updatable = false, nullable = false, columnDefinition = "varchar(255)", unique = true)
+  @Column(name = "email", nullable = false, unique = true, columnDefinition = "TEXT")
   private String email;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -34,6 +34,6 @@ public class User {
   public void addUniqueDigit(UniqueDigit uniqueDigit) {
     var newUniqueDigit = uniqueDigit.clone();
     newUniqueDigit.setUser(this);
-    this.uniqueDigits.add(uniqueDigit);
+    this.uniqueDigits.add(newUniqueDigit);
   }
 }
