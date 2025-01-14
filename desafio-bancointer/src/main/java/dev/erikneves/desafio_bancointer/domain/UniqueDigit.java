@@ -12,29 +12,27 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "unique_digits")
 @Data
 @NoArgsConstructor
 public class UniqueDigit implements Cloneable {
+  @Setter
+  @Getter
   @Id
   @Column(name = "id", nullable = false)
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  public UUID getId() {
-    return this.id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
+  @Getter
   @Column(name = "result", nullable = false, columnDefinition = "int")
   private int result;
 
+  @Setter
   @ManyToOne
   @JoinColumn(name = "user_id", nullable = true)
   private User user;
@@ -51,15 +49,7 @@ public class UniqueDigit implements Cloneable {
     this.result = this.calculateNewUniqueDigit(number, k);
   }
 
-  public int getResult() {
-    return this.result;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
-
-  private int calculateNewUniqueDigit(BigInteger number, int k) {
+    private int calculateNewUniqueDigit(BigInteger number, int k) {
     // Repetir o número k vezes e calcular a soma inicial
     int uniqueDigit = sumOfDigits(String.valueOf(number).repeat(k));
 
