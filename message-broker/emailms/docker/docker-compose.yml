@@ -1,0 +1,16 @@
+services:
+ postgres-userdb:
+    image: postgres
+    container_name: postgres-emaildb
+    ports:
+      - "5433:5432" 
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: emaildb
+    volumes:
+      - postgres_email_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_email_data:
+  
