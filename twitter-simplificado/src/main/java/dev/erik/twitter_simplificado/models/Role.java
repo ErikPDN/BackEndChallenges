@@ -14,4 +14,18 @@ public class Role {
   private Long roleId;
 
   private String name;
+
+  public enum RoleName {
+    ROLE_USER(2L), ROLE_ADMIN(1L);
+
+    private final long roleId;
+
+    RoleName(long roleId) {
+      this.roleId = roleId;
+    }
+
+    public long getRoleId() {
+      return roleId;
+    }
+  }
 }
