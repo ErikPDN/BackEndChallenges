@@ -14,5 +14,4 @@ public class TwitterSimplificadoApplication {
     System.setProperty("PASSWORD", dotenv.get("PASSWORD"));
     SpringApplication.run(TwitterSimplificadoApplication.class, args);
   }
-
 }

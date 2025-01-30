@@ -1,26 +1,36 @@
 package dev.erik.twitter_simplificado.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tb_roles")
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class Role {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "role_id")
   private Long roleId;
 
   private String name;
 
-  public enum RoleName {
-    ROLE_USER(2L), ROLE_ADMIN(1L);
+  public enum Values {
 
-    private final long roleId;
+    ADMIN(1L),
+    BASIC(2L);
 
-    RoleName(long roleId) {
+    long roleId;
+
+    Values(long roleId) {
       this.roleId = roleId;
     }
 

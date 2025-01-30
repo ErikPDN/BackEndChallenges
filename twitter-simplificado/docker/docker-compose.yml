@@ -12,7 +12,7 @@ services:
       - MYSQL_ROOT_PASSWORD=${PASSWORD}
 
     volumes:
-      - mysql_twitter_data:/var/lib/mysql/data
+      - mysql_twitter_data:/var/lib/mysql
 
 volumes:
   mysql_twitter_data:
