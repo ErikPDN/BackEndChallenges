@@ -1,0 +1,19 @@
+services:
+  mysql:
+    image: mysql
+    ports: 
+      - "3306:3306"
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_USER=${USERNAME}
+      - MYSQL_PASSWORD=${PASSWORD}
+      - MYSQL_DATABASE=twitterdb
+      - MYSQL_ROOT_PASSWORD=${PASSWORD}
+
+    volumes:
+      - mysql_twitter_data:/var/lib/mysql/data
+
+volumes:
+  mysql_twitter_data:
+  
