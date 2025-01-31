@@ -31,8 +31,13 @@ public class UserController {
   @GetMapping()
   @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
   public ResponseEntity<GetUsersResponseDTO> getUsers() {
-    var users = this.userService.getUsers(); // poderia utilizar paginação futuramente
-    log.info("Listando usuários");
-    return ResponseEntity.ok(users);
+    try {
+      var users = this.userService.getUsers(); // poderia utilizar paginação futuramente
+      log.info("Listando usuários");
+      return ResponseEntity.ok(users);
+    } catch (Exception e) {
+      log.error("Erro ao listar usuários", e);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
   }
 }

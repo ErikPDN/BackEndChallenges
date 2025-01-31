@@ -6,6 +6,8 @@ import dev.erik.twitter_simplificado.services.TweetService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +29,17 @@ public class TweetController {
     this.tweetService.createTweet(tweetRequest.content(), token);
     log.info("Tweet criado: {}", tweetRequest.content());
     return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteTweet(@PathVariable("id") Long id,
+      JwtAuthenticationToken token) {
+    try {
+      this.tweetService.deleteTweet(id, token);
+      return ResponseEntity.ok().build();
+    } catch (Exception e) {
+      log.error("Erro ao deletar tweet", e);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
   }
 }

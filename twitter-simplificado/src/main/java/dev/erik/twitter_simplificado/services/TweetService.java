@@ -4,5 +4,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 
 public interface TweetService {
   void createTweet(String content, JwtAuthenticationToken token);
-  // void deleteTweet(String id);
+
+  void deleteTweet(Long id, JwtAuthenticationToken token);
 }
