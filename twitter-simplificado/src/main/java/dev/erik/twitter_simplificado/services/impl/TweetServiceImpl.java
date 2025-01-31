@@ -1,10 +1,13 @@
 package dev.erik.twitter_simplificado.services.impl;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import dev.erik.twitter_simplificado.controllers.dtos.TweetResponseDTO;
 import dev.erik.twitter_simplificado.models.Tweet;
 import dev.erik.twitter_simplificado.repositories.TweetRepository;
 import dev.erik.twitter_simplificado.repositories.UserRepository;
@@ -49,4 +52,15 @@ public class TweetServiceImpl implements TweetService {
 
     this.tweetRepository.deleteById(id);
   }
+
+  @Override
+  public List<TweetResponseDTO> getTweets(JwtAuthenticationToken token) {
+    var tweets = this.tweetRepository.findAll();
+    var tweetsDTO = tweets.stream()
+        .map(tweet -> new TweetResponseDTO(tweet.getContent(), tweet.getUser().getUsername(), tweet.getCreatedAt()))
+        .collect(Collectors.toList());
+
+    return tweetsDTO;
+  }
+
 }

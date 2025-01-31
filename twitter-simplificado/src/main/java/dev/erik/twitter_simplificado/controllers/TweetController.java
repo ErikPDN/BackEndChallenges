@@ -1,12 +1,14 @@
 package dev.erik.twitter_simplificado.controllers;
 
 import dev.erik.twitter_simplificado.controllers.dtos.CreateTweetRequestDTO;
+import dev.erik.twitter_simplificado.controllers.dtos.GetTweetsResponseDTO;
 import dev.erik.twitter_simplificado.services.TweetService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,5 +43,12 @@ public class TweetController {
       log.error("Erro ao deletar tweet", e);
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
+  }
+
+  @GetMapping()
+  public ResponseEntity<GetTweetsResponseDTO> getTweets(JwtAuthenticationToken token) {
+    var request = this.tweetService.getTweets(token);
+    var response = new GetTweetsResponseDTO(request);
+    return ResponseEntity.ok(response);
   }
 }
