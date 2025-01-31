@@ -2,6 +2,7 @@ package dev.erik.twitter_simplificado.services.impl;
 
 import java.time.Instant;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -45,11 +46,17 @@ public class TokenServiceImpl implements TokenService {
     var expiresIn = jwtExpirationTime;
     var now = Instant.now();
 
+    var scopes = user.getRoles()
+        .stream()
+        .map(role -> role.getName())
+        .collect(Collectors.joining(" "));
+
     var claims = JwtClaimsSet.builder()
         .issuer("twitter-simplificado-api")
         .subject(user.getUserId().toString())
         .issuedAt(now)
         .expiresAt(now.plusSeconds(expiresIn))
+        .claim("scope", scopes)
         .build();
 
     var jwtValue = this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
