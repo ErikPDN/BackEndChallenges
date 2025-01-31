@@ -24,7 +24,6 @@ public class Role {
   private String name;
 
   public enum Values {
-
     ADMIN(1L),
     BASIC(2L);
 
