@@ -45,20 +45,20 @@ public class TransacaoController {
   @DeleteMapping
   @Operation(description = "Deleta todas as transações")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Transação removida com sucesso"),
+      @ApiResponse(responseCode = "204", description = "Transações deletadas com sucesso"),
       @ApiResponse(responseCode = "400", description = "Requisição inválida"),
       @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
   })
   public ResponseEntity<Void> deletarTransacoes() {
     this.transacaoService.deletarTransacoes();
 
-    return ResponseEntity.ok().build();
+    return ResponseEntity.noContent().build();
   }
 
   @GetMapping
   @Operation(description = "Busca as transações")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Transação de busca com sucesso"),
+      @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso"),
       @ApiResponse(responseCode = "400", description = "Requisição inválida"),
       @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
   })
